@@ -61,6 +61,12 @@ jobs:
             .targets["thunderclaps-ios_iOS"].settings.CODE_SIGNING_ALLOWED = "NO" |
             .targets["thunderclaps-ios_iOS"].settings.DEVELOPMENT_TEAM = "12345"
           ' src-tauri/gen/apple/project.yml
+
+      - name: Upload iOS build folder as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-build-output
+          path: src-tauri/gen/apple/
     
       - name: Build Tauri iOS app
         run: |
