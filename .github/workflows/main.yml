@@ -1,7 +1,6 @@
 name: Build app for iOS
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   build:
