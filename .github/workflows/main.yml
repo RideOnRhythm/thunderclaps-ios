@@ -46,7 +46,7 @@ jobs:
         run: cargo tauri ios init
   
       - name: Build Tauri iOS app
-        run: cargo tauri ios build
+        run: cargo tauri ios build -vv
 
       - name: Upload IPA
         uses: actions/upload-artifact@v4
