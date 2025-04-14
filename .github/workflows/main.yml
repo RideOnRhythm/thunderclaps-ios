@@ -40,6 +40,9 @@ jobs:
 
       - name: Add WASM target
         run: rustup target add wasm32-unknown-unknown
+
+      - name: Initialize Tauri iOS project
+        run: cargo tauri ios init
   
       - name: Build Leptos frontend
         run: trunk build --release
