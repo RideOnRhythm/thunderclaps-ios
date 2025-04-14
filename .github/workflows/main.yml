@@ -29,7 +29,6 @@ jobs:
       - name: Install Tauri CLI
         run: |
           if ! command -v tauri-cli &>/dev/null; then
-            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
             cargo install tauri-cli
           fi
 
