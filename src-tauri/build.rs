@@ -6,7 +6,7 @@ fn main() {
     panic!("Current working directory: {}", cwd.display());
     
     println!("cargo:rustc-link-search=framework=/..");
-    println!("cargo:rustc-link-lib=framework=TensorFlowLiteC");
+    println!("cargo:rustc-link-lib=framework=TensoridkFlowLiteC");
 
     println!("cargo:rerun-if-changed=/../TensorFlowLiteC.framework/Headers/c_api.h");
 
