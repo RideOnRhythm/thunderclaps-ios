@@ -9,13 +9,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          target: aarch64-apple-ios
-          override: true
-
       - name: Cache Rust dependencies
         uses: actions/cache@v3
         with:
@@ -47,13 +40,12 @@ jobs:
       - name: Build Leptos frontend
         run: trunk build --release
 
-      - name: Build Tauri iOS app
-        run: cargo tauri ios build
-
-      - name: Upload IPA
-        uses: actions/upload-artifact@v4
+      - name: Cache Leptos build artifacts
+        uses: actions/cache@v3
         with:
-          name: ios-ipa
-          path: src-tauri/gen/apple/build/arm64/*.ipa
+          path: dist
+          key: ${{ runner.os }}-leptos-dist-${{ hashFiles('**/Cargo.lock', 'Trunk.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-leptos-dist-
 
       # Optional: archive/export to IPA
