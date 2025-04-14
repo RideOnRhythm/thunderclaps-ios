@@ -44,6 +44,12 @@ jobs:
 
       - name: Initialize Tauri iOS project
         run: cargo tauri ios init
+
+      - name: Disable Code Signing for Xcode
+        run: |
+          export DEVELOPMENT_TEAM=""
+          export CODE_SIGN_IDENTITY="iPhone Developer"
+          export CODE_SIGNING_REQUIRED=NO
   
       - name: Build Tauri iOS app
         run: cargo tauri ios build
