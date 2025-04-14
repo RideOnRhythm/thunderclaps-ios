@@ -26,7 +26,8 @@
     "active": true,
     "targets": "all",
     "resources": [
-      "../TensorFlowLiteC.framework"
+      "../TensorFlowLiteC.framework",
+      "../nsfw.299x299.tflite"
     ],
     "icon": [
       "icons/32x32.png",
