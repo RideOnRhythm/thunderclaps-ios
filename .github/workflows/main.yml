@@ -49,7 +49,7 @@ jobs:
         run: |
           export CODE_SIGN_IDENTITY="Don't Code Sign"
           export CODE_SIGNING_REQUIRED="NO"
-          export APPLE_DEVELOPMENT_TEAM=""
+          export APPLE_DEVELOPMENT_TEAM="12345"
           export PROVISIONING_PROFILE_SPECIFIER=""
           cargo tauri ios build
 
