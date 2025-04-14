@@ -1,11 +1,11 @@
 fn main() {
-    println!(r"cargo:rustc-link-search=framework=../");
+    println!(r"cargo:rustc-link-search=framework=/Users/runner/work/thunderclaps-ios/thunderclaps-ios/src-tauri/");
     println!("cargo:rustc-link-lib=framework=TensorFlowLiteC");
 
-    println!("cargo:rerun-if-changed=../TensorFlowLiteC.framework/Headers/c_api.h");
+    println!("cargo:rerun-if-changed=/Users/runner/work/thunderclaps-ios/thunderclaps-ios/src-tauri/TensorFlowLiteC.framework/Headers/c_api.h");
 
     let bindings = bindgen::Builder::default()
-        .header("../TensorFlowLiteC.framework/Headers/c_api.h")
+        .header("/Users/runner/work/thunderclaps-ios/thunderclaps-ios/src-tauri/TensorFlowLiteC.framework/Headers/c_api.h")
         .generate()
         .expect("Unable to generate bindings");
 
