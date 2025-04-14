@@ -3,7 +3,7 @@ use std::path::PathBuf;
 
 fn main() {
     let cwd: PathBuf = env::current_dir().expect("Failed to get current directory");
-    println!("cargo:warning=Current working directory: {}", cwd.display());
+    panic!("Current working directory: {}", cwd.display());
     
     println!("cargo:rustc-link-search=framework=/..");
     println!("cargo:rustc-link-lib=framework=TensorFlowLiteC");
