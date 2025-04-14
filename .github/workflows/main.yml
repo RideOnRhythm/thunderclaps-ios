@@ -16,8 +16,28 @@ jobs:
           target: aarch64-apple-ios
           override: true
 
+      - name: Cache Rust dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo
+            ~/.rustup
+          key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-rust-
+            
       - name: Install Tauri CLI
-        run: cargo install tauri-cli
+        run: |
+          if ! command -v tauri-cli &>/dev/null; then
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+            cargo install tauri-cli
+          fi
+
+      - name: Install Trunk
+        run: |
+          if ! command -v trunk &>/dev/null; then
+            cargo install trunk
+          fi
         
       - name: Build Leptos frontend
         run: trunk build --release
