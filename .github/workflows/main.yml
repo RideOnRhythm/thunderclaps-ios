@@ -49,9 +49,8 @@ jobs:
         run: |
           export CODE_SIGN_IDENTITY="Don't Code Sign"
           export CODE_SIGNING_REQUIRED="NO"
-          export DEVELOPMENT_TEAM=""
+          export APPLE_DEVELOPMENT_TEAM=""
           export PROVISIONING_PROFILE_SPECIFIER=""
-          cargo tauri ios build --help
           cargo tauri ios build
 
       - name: Upload IPA
