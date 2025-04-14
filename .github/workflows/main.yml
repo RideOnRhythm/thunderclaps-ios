@@ -50,12 +50,6 @@ jobs:
           export PROVISIONING_PROFILE_SPECIFIER=""
           cargo tauri ios init
 
-      - name: Upload iOS build folder as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ios-build-output
-          path: src-tauri/gen/apple/
-
       - name: Install yq
         run: brew install yq
       
