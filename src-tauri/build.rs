@@ -1,8 +1,14 @@
+use std::env;
+use std::path::PathBuf;
+
 fn main() {
-    println!(r"cargo:rustc-link-search=framework=/Users/runner/work/thunderclaps-ios/thunderclaps-ios");
+    let cwd: PathBuf = env::current_dir().expect("Failed to get current directory");
+    println!("cargo:warning=Current working directory: {}", cwd.display());
+    
+    println!("cargo:rustc-link-search=framework=/..");
     println!("cargo:rustc-link-lib=framework=TensorFlowLiteC");
 
-    println!("cargo:rerun-if-changed=/Users/runner/work/thunderclaps-ios/thunderclaps-ios/TensorFlowLiteC.framework/Headers/c_api.h");
+    println!("cargo:rerun-if-changed=/../TensorFlowLiteC.framework/Headers/c_api.h");
 
     let bindings = bindgen::Builder::default()
         .header("/Users/runner/work/thunderclaps-ios/thunderclaps-ios/src-tauri/TensorFlowLiteC.framework/Headers/c_api.h")
