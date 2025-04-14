@@ -42,14 +42,17 @@ jobs:
       - name: Add WASM target
         run: rustup target add wasm32-unknown-unknown
 
-      - name: Initialize Tauri iOS project
-        run: cargo tauri ios init
-
       - name: Disable Code Signing for Xcode
         run: |
+          export SDKROOT=iphoneos18.0
+          export CODE_SIGN_IDENTITY="Don't Code Sign"
+          export CODE_SIGNING_REQUIRED="NO"
           export DEVELOPMENT_TEAM=""
-          export CODE_SIGN_IDENTITY="iPhone Developer"
-          export CODE_SIGNING_REQUIRED=NO
+          export PROVISIONING_PROFILE_SPECIFIER=""
+          cargo tauri ios build --release --no-signing
+          
+      - name: Initialize Tauri iOS project
+        run: cargo tauri ios init
   
       - name: Build Tauri iOS app
         run: cargo tauri ios build
