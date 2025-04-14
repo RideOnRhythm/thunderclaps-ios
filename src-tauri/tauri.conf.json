@@ -35,5 +35,11 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ]
+  },
+  "ios": {
+    "signing": {
+      "development": false,
+      "distribution": false
+    }
   }
 }
