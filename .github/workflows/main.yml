@@ -49,7 +49,7 @@ jobs:
           export CODE_SIGNING_REQUIRED="NO"
           export DEVELOPMENT_TEAM=""
           export PROVISIONING_PROFILE_SPECIFIER=""
-          cargo tauri ios build --release --no-signing
+          cargo tauri ios build
           
       - name: Initialize Tauri iOS project
         run: cargo tauri ios init
