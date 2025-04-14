@@ -43,8 +43,19 @@ jobs:
         run: rustup target add wasm32-unknown-unknown
           
       - name: Initialize Tauri iOS project
-        run: cargo tauri ios init
+        run: |
+          export CODE_SIGN_IDENTITY="Don't Code Sign"
+          export CODE_SIGNING_REQUIRED="NO"
+          export APPLE_DEVELOPMENT_TEAM="12345"
+          export PROVISIONING_PROFILE_SPECIFIER=""
+          cargo tauri ios init
 
+      - name: Upload iOS build folder as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-build-output
+          path: src-tauri/gen/apple/
+    
       - name: Build Tauri iOS app
         run: |
           export CODE_SIGN_IDENTITY="Don't Code Sign"
