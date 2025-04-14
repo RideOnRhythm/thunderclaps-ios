@@ -1,0 +1,29 @@
+name: Build app for iOS
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: aarch64-apple-ios
+          override: true
+
+      - name: Install Tauri CLI
+        run: cargo install tauri-cli
+        
+      - name: Build Leptos frontend
+        run: trunk build --release
+          
+      - name: Build Tauri iOS app
+        run: tauri build --target aarch64-apple-ios
+
+      # Optional: archive/export to IPA
