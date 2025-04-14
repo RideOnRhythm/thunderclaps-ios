@@ -44,4 +44,13 @@ jobs:
       - name: Build Leptos frontend
         run: trunk build --release
 
+      - name: Build Tauri iOS app
+        run: cargo tauri ios build
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-ipa
+          path: src-tauri/gen/apple/build/arm64/*.ipa
+
       # Optional: archive/export to IPA
