@@ -50,6 +50,11 @@ jobs:
           export PROVISIONING_PROFILE_SPECIFIER=""
           cargo tauri ios init
 
+      - name: Display project.yml
+        run: |
+          ls src-tauri/gen/apple/
+          cat src-tauri/gen/apple/project.yml
+
       - name: Build Tauri iOS app
         run: |
           export CODE_SIGN_IDENTITY="Don't Code Sign"
