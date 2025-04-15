@@ -44,12 +44,21 @@ jobs:
           
       - name: Initialize Tauri iOS project
         run: |
-          export CODE_SIGN_IDENTITY="Don't Code Sign"
-          export CODE_SIGNING_REQUIRED="NO"
           export APPLE_DEVELOPMENT_TEAM="12345"
-          export PROVISIONING_PROFILE_SPECIFIER=""
           cargo tauri ios init
-
+      
+      - name: Install yq
+        run: brew install yq
+      
+      - name: Disable code signing in project.yml
+        run: |
+          yq -i '
+            .targets["thunderclaps-ios_iOS"].settings.base.CODE_SIGN_IDENTITY = "" |
+            .targets["thunderclaps-ios_iOS"].settings.base.CODE_SIGNING_REQUIRED = "NO" |
+            .targets["thunderclaps-ios_iOS"].settings.base.CODE_SIGNING_ALLOWED = "NO" |
+            .targets["thunderclaps-ios_iOS"].settings.base.DEVELOPMENT_TEAM = ""
+          ' project.yml
+      
       - name: Display project.yml
         run: |
           ls src-tauri/gen/apple/
@@ -57,12 +66,7 @@ jobs:
 
       - name: Build Tauri iOS app
         run: |
-          export CODE_SIGN_IDENTITY="Don't Code Sign"
-          export CODE_SIGNING_REQUIRED="NO"
-          export CODE_SIGN_ENTITLEMENTS=""
-          export CODE_SIGNING_ALLOWED="NO"
           export APPLE_DEVELOPMENT_TEAM="12345"
-          export PROVISIONING_PROFILE_SPECIFIER=""
           cargo tauri ios build
 
       - name: Upload IPA
