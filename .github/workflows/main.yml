@@ -57,7 +57,7 @@ jobs:
             .targets["thunderclaps-ios_iOS"].settings.base.CODE_SIGNING_REQUIRED = "NO" |
             .targets["thunderclaps-ios_iOS"].settings.base.CODE_SIGNING_ALLOWED = "NO" |
             .targets["thunderclaps-ios_iOS"].settings.base.DEVELOPMENT_TEAM = ""
-          ' project.yml
+          ' src-tauri/gen/apple/project.yml
       
       - name: Display project.yml
         run: |
