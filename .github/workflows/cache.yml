@@ -24,15 +24,6 @@ jobs:
           git clone https://github.com/RideOnRhythm/tauri.git
           cargo install --path tauri/crates/tauri-cli
 
-      - name: Install Trunk
-        run: |
-          if ! command -v trunk &>/dev/null; then
-            cargo install trunk
-          fi
-
-      - name: Build Leptos frontend
-        run: trunk build --release
-
       - name: Cache Rust dependencies
         uses: actions/cache@v3
         with:
@@ -42,11 +33,3 @@ jobs:
           key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: |
             ${{ runner.os }}-rust-
-
-      - name: Cache Leptos build artifacts
-        uses: actions/cache@v3
-        with:
-          path: dist
-          key: ${{ runner.os }}-leptos-dist-${{ hashFiles('**/Cargo.lock', 'Trunk.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-leptos-dist-
