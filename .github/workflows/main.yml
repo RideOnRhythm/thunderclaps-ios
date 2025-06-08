@@ -1,0 +1,76 @@
+name: Build app for iOS
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    permissions: write-all
+    runs-on: macos-15
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: aarch64-apple-ios
+          override: true
+
+      - name: Cache Rust dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo
+            ~/.rustup
+          key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-rust-
+
+      - name: Set Xcode version
+        run: sudo xcode-select -switch /Applications/Xcode_16.3.app
+
+      - name: Add WASM target
+        run: rustup target add wasm32-unknown-unknown
+
+      - name: Initialize Tauri iOS project
+        env:
+          APPLE_DEVELOPMENT_TEAM: "12345"
+        run: |
+          cargo tauri ios init
+
+      - name: Disable code signing
+        run: |
+          sudo plutil -replace DefaultProperties.CODE_SIGNING_REQUIRED -bool false /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/SDKSettings.plist
+          sudo plutil -replace DefaultProperties.ENTITLEMENTS_REQUIRED -bool false /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/SDKSettings.plist
+          sed -i '' 's/CODE_SIGN_IDENTITY = .*;/CODE_SIGN_IDENTITY = "";/g' src-tauri/gen/apple/thunderclaps-ios.xcodeproj/project.pbxproj
+          /usr/libexec/PlistBuddy -c "Add :signingStyle string manual" src-tauri/gen/apple/ExportOptions.plist
+
+      - name: Link framework
+        run: |
+          ruby configure_xcode_framework.rb
+
+      - name: Attempt Tauri build
+        env:
+          APPLE_DEVELOPMENT_TEAM: "12345"
+        run: |
+          cargo tauri ios build
+
+      - name: Create IPA from archive
+        run: |
+          cd src-tauri/gen/apple/build
+          cp -R thunderclaps-ios_iOS.xcarchive/Products/Applications/thunderclaps-ios.app .
+          mkdir -p Payload
+          cp -R thunderclaps-ios.app Payload/
+          zip -r thunderclaps-ios.ipa Payload
+          ls
+
+      - name: Upload IPA
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: /Users/runner/work/thunderclaps-ios/thunderclaps-ios/src-tauri/gen/apple/build/thunderclaps-ios.ipa
+          asset_name: thunderclaps-ios.ipa
+          tag: ${{ github.ref }}
+          overwrite: true
+          body: "This is my release text"
