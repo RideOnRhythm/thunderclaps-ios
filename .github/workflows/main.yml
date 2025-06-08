@@ -50,7 +50,7 @@ jobs:
         env:
           APPLE_DEVELOPMENT_TEAM: "12345"
         run: |
-          cargo tauri ios build
+          cargo tauri ios build -v
 
       - name: Create IPA from archive
         run: |
