@@ -51,7 +51,7 @@ jobs:
           APPLE_DEVELOPMENT_TEAM: "12345"
         run: |
           cargo tauri info
-          cargo tauri ios build -vvv
+          cargo tauri ios build
 
       - name: Create IPA from archive
         run: |
