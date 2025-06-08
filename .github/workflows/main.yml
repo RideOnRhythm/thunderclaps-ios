@@ -46,10 +46,6 @@ jobs:
           sed -i '' 's/CODE_SIGN_IDENTITY = .*;/CODE_SIGN_IDENTITY = "";/g' src-tauri/gen/apple/thunderclaps-ios.xcodeproj/project.pbxproj
           /usr/libexec/PlistBuddy -c "Add :signingStyle string manual" src-tauri/gen/apple/ExportOptions.plist
 
-      - name: Link framework
-        run: |
-          ruby configure_xcode_framework.rb
-
       - name: Attempt Tauri build
         env:
           APPLE_DEVELOPMENT_TEAM: "12345"
