@@ -1,6 +1,6 @@
-let contentTarget = document.getElementById("imagePaste");
-let button = document.getElementById("classify");
-let imageData;
+var contentTarget = document.getElementById("imagePaste");
+var button = document.getElementById("classify");
+var imageData;
 
 contentTarget.onpaste = (event) => {
     const items = event.clipboardData?.items;
@@ -24,7 +24,7 @@ contentTarget.onpaste = (event) => {
 };
 
 button.onclick = () => {
-    const img = new Image();
+    let img = new Image();
     if (imageData == null) {
         return;
     }
@@ -33,12 +33,14 @@ button.onclick = () => {
     img.onload = async () => {
         try {
             const tensor = tf.browser.fromPixels(img)
-                .resizeNearestNeighbor([299, 299])
                 .toFloat()
+                .resizeBilinear([299, 299])
+                .div(tf.scalar(255.0))
                 .expandDims();
+            const batched = tensor.reshape([1, 299, 299, 3])
 
             let model = await tf.loadLayersModel("/model/model.json");
-            const prediction = model.predict(tensor);
+            const prediction = model.predict(batched);
             const data = await prediction.data();
 
             let array = Array.from(data);
@@ -51,7 +53,7 @@ Sexy: ${(array[4] * 100).toFixed(2)}%
             let results = document.getElementById("results");
             results.textContent = string;
         } catch (err) {
-
+            console.error(err);
         }
     };
 }
