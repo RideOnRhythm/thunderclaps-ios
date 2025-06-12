@@ -1,5 +1,6 @@
 var contentTarget = document.getElementById("imagePaste");
 var button = document.getElementById("classify");
+var clear = document.getElementById("clear");
 var imageData;
 
 contentTarget.onpaste = (event) => {
@@ -56,4 +57,10 @@ Sexy: ${(array[4] * 100).toFixed(2)}%
             console.error(err);
         }
     };
+}
+
+clear.onclick = () => {
+    contentTarget.innerHTML = 'Paste image here...';
+    let results = document.getElementById("results");
+    results.innerHTML = '';
 }
