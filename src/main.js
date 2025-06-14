@@ -1,7 +1,11 @@
 var contentTarget = document.getElementById("imagePaste");
 var button = document.getElementById("classify");
+var filterButton = document.getElementById("filter");
 var clear = document.getElementById("clear");
+var image = document.getElementById("image");
 var imageData;
+
+const invoke = window.__TAURI__.core.invoke;
 
 contentTarget.onpaste = (event) => {
     const items = event.clipboardData?.items;
@@ -59,8 +63,17 @@ Sexy: ${(array[4] * 100).toFixed(2)}%
     };
 }
 
+filterButton.onclick = () => {
+    console.log(imageData);
+    invoke('apply_filters', { imageString: imageData })
+        .then((imageString) => {
+            image.src = imageString;
+        });
+}
+
 clear.onclick = () => {
     contentTarget.innerHTML = 'Paste image here...';
     let results = document.getElementById("results");
     results.innerHTML = '';
+    image.src = '';
 }
